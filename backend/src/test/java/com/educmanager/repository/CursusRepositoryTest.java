@@ -32,7 +32,7 @@ class CursusRepositoryTest {
         Cursus savedCursus = cursusRepository.save(cursus);
 
         assertThat(savedCursus.getId()).isNotNull();
-        assertThat(savedCursus.getFiliere()).isEqualTo(savedFiliere);
         assertThat(savedCursus.getName()).isEqualTo("CDA");
+        assertThat(savedCursus.getFiliere().getId()).isEqualTo(savedFiliere.getId());
     }
 }
