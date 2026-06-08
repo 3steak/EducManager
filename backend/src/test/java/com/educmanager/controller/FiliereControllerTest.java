@@ -2,6 +2,7 @@ package com.educmanager.controller;
 
 import com.educmanager.dto.FiliereDto;
 import com.educmanager.entity.Filiere;
+import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.service.FiliereService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,7 +55,7 @@ class FiliereControllerTest {
                 .id(1L)
                 .name("Développement")
                 .build();
-        when(filiereService.findById(1L)).thenReturn(Optional.of(filiere));
+        when(filiereService.findById(1L)).thenReturn(filiere);
 
         mockMvc.perform(get("/api/filieres/1"))
                 .andExpect(status().isOk())
@@ -65,7 +64,7 @@ class FiliereControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenFiliereDoesNotExist() throws Exception {
-        when(filiereService.findById(1L)).thenReturn(Optional.empty());
+        when(filiereService.findById(1L)).thenThrow(new ResourceNotFoundException("Filiere not found"));
 
         mockMvc.perform(get("/api/filieres/1"))
                 .andExpect(status().isNotFound());

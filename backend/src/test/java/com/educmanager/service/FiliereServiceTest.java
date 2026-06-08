@@ -46,9 +46,9 @@ class FiliereServiceTest {
                 .build();
         when(filiereRepository.findById(1L)).thenReturn(Optional.of(filiere));
 
-        Optional<Filiere> result = filiereService.findById(1L);
+        Filiere result = filiereService.findById(1L);
 
-        assertThat(result).contains(filiere);
+        assertThat(result).isEqualTo(filiere);
         verify(filiereRepository).findById(1L);
     }
 
@@ -71,8 +71,15 @@ class FiliereServiceTest {
 
     @Test
     void shouldDeleteFiliereById() {
+        Filiere filiere = Filiere.builder()
+                .id(1L)
+                .name("DÃ©veloppement")
+                .build();
+        when(filiereRepository.findById(1L)).thenReturn(Optional.of(filiere));
+
         filiereService.deleteById(1L);
 
-        verify(filiereRepository).deleteById(1L);
+        verify(filiereRepository).findById(1L);
+        verify(filiereRepository).delete(filiere);
     }
 }

@@ -3,6 +3,7 @@ package com.educmanager.controller;
 import com.educmanager.dto.CursusDto;
 import com.educmanager.entity.Cursus;
 import com.educmanager.entity.Filiere;
+import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.service.CursusService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,7 +66,7 @@ class CursusControllerTest {
                 .name("CDA")
                 .filiere(filiere)
                 .build();
-        when(cursusService.findById(2L)).thenReturn(Optional.of(cursus));
+        when(cursusService.findById(2L)).thenReturn(cursus);
 
         mockMvc.perform(get("/api/cursus/2"))
                 .andExpect(status().isOk())
@@ -76,7 +75,7 @@ class CursusControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenCursusDoesNotExist() throws Exception {
-        when(cursusService.findById(2L)).thenReturn(Optional.empty());
+        when(cursusService.findById(2L)).thenThrow(new ResourceNotFoundException("Cursus not found"));
 
         mockMvc.perform(get("/api/cursus/2"))
                 .andExpect(status().isNotFound());

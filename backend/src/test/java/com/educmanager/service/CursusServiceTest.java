@@ -47,9 +47,9 @@ class CursusServiceTest {
                 .build();
         when(cursusRepository.findById(1L)).thenReturn(Optional.of(cursus));
 
-        Optional<Cursus> result = cursusService.findById(1L);
+        Cursus result = cursusService.findById(1L);
 
-        assertThat(result).contains(cursus);
+        assertThat(result).isEqualTo(cursus);
         verify(cursusRepository).findById(1L);
     }
 
@@ -78,8 +78,15 @@ class CursusServiceTest {
 
     @Test
     void shouldDeleteCursusById() {
+        Cursus cursus = Cursus.builder()
+                .id(1L)
+                .name("CDA")
+                .build();
+        when(cursusRepository.findById(1L)).thenReturn(Optional.of(cursus));
+
         cursusService.deleteById(1L);
 
-        verify(cursusRepository).deleteById(1L);
+        verify(cursusRepository).findById(1L);
+        verify(cursusRepository).delete(cursus);
     }
 }
