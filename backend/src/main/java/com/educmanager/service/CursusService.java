@@ -1,11 +1,11 @@
 package com.educmanager.service;
 
 import com.educmanager.entity.Cursus;
+import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.CursusRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CursusService {
@@ -20,8 +20,9 @@ public class CursusService {
         return cursusRepository.findAll();
     }
 
-    public Optional<Cursus> findById(Long id) {
-        return cursusRepository.findById(id);
+    public Cursus findById(Long id) {
+        return cursusRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));
     }
 
     public Cursus create(Cursus cursus) {
@@ -29,6 +30,9 @@ public class CursusService {
     }
 
     public void deleteById(Long id) {
-        cursusRepository.deleteById(id);
+        Cursus cursus = cursusRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));
+
+        cursusRepository.delete(cursus);
     }
 }

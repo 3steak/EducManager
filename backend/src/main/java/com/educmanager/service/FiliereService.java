@@ -1,11 +1,11 @@
 package com.educmanager.service;
 
 import com.educmanager.entity.Filiere;
+import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.FiliereRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FiliereService {
@@ -20,8 +20,9 @@ public class FiliereService {
         return filiereRepository.findAll();
     }
 
-    public Optional<Filiere> findById(Long id) {
-        return filiereRepository.findById(id);
+    public Filiere findById(Long id) {
+        return filiereRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));
     }
 
     public Filiere create(Filiere filiere) {
@@ -29,6 +30,9 @@ public class FiliereService {
     }
 
     public void deleteById(Long id) {
-        filiereRepository.deleteById(id);
+        Filiere filiere = filiereRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));
+
+        filiereRepository.delete(filiere);
     }
 }
