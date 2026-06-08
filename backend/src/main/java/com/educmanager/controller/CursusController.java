@@ -36,10 +36,9 @@ public class CursusController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CursusDto> findById(@PathVariable Long id) {
-        return cursusService.findById(id)
-                .map(CursusMapper::toDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Cursus cursus = cursusService.findById(id);
+
+        return ResponseEntity.ok(CursusMapper.toDto(cursus));
     }
 
     @PostMapping

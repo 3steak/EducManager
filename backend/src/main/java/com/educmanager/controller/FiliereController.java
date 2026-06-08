@@ -36,10 +36,9 @@ public class FiliereController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FiliereDto> findById(@PathVariable Long id) {
-        return filiereService.findById(id)
-                .map(FiliereMapper::toDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Filiere filiere = filiereService.findById(id);
+
+        return ResponseEntity.ok(FiliereMapper.toDto(filiere));
     }
 
     @PostMapping
