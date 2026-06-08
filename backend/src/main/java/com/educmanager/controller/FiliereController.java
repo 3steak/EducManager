@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,14 @@ public class FiliereController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(FiliereMapper.toDto(savedFiliere));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FiliereDto> update(@PathVariable Long id, @RequestBody FiliereDto dto) {
+        Filiere filiere = FiliereMapper.toEntity(dto);
+        Filiere updatedFiliere = filiereService.update(id, filiere);
+
+        return ResponseEntity.ok(FiliereMapper.toDto(updatedFiliere));
     }
 
     @DeleteMapping("/{id}")

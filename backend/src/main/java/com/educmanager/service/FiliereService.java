@@ -29,6 +29,15 @@ public class FiliereService {
         return filiereRepository.save(filiere);
     }
 
+    public Filiere update(Long id, Filiere filiere) {
+        Filiere existingFiliere = filiereRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));
+
+        existingFiliere.setName(filiere.getName());
+
+        return filiereRepository.save(existingFiliere);
+    }
+
     public void deleteById(Long id) {
         Filiere filiere = filiereRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));

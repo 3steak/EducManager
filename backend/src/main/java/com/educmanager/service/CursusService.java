@@ -29,6 +29,16 @@ public class CursusService {
         return cursusRepository.save(cursus);
     }
 
+    public Cursus update(Long id, Cursus cursus) {
+        Cursus existingCursus = cursusRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));
+
+        existingCursus.setName(cursus.getName());
+        existingCursus.setFiliere(cursus.getFiliere());
+
+        return cursusRepository.save(existingCursus);
+    }
+
     public void deleteById(Long id) {
         Cursus cursus = cursusRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));

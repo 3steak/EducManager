@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,21 @@ public class CursusController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CursusMapper.toDto(savedCursus));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CursusDto> update(@PathVariable Long id, @RequestBody CursusDto dto) {
+        Cursus cursus = CursusMapper.toEntity(dto);
+        Cursus updatedCursus = cursusService.update(id, cursus);
+
+        return ResponseEntity.ok(CursusMapper.toDto(updatedCursus));
+    }
+
+    @PostMapping("/{id}/courses")
+    public ResponseEntity<CursusDto> addCourse(@PathVariable Long id) {
+        Cursus cursus = cursusService.findById(id);
+
+        return ResponseEntity.ok(CursusMapper.toDto(cursus));
     }
 
     @DeleteMapping("/{id}")
