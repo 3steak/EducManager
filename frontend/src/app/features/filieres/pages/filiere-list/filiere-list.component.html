@@ -1,0 +1,34 @@
+<section>
+  <h1>Filières</h1>
+
+  <form (ngSubmit)="onSubmit()">
+    <label for="filiere-name">Nom</label>
+    <input
+      id="filiere-name"
+      type="text"
+      name="name"
+      [(ngModel)]="name"
+      required
+    />
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <p *ngIf="loading">Chargement des filières...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="!loading && !error && filieres.length === 0">Aucune filière pour le moment.</p>
+
+  <table *ngIf="!loading && !error && filieres.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let filiere of filieres">
+        <td>{{ filiere.id }}</td>
+        <td>{{ filiere.name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
