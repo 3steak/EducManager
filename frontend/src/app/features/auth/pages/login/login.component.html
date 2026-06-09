@@ -1,43 +1,20 @@
-<section class="login-page">
-  <div class="login-card">
-    <h1>Connexion</h1>
-    <p>Connectez-vous pour acceder a EducManager.</p>
+<div class="login-page">
+  <h1>Connexion</h1>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <label>
-        Email
-        <input type="email" formControlName="email" placeholder="admin@educmanager.fr" />
-        @if (form.controls.email.touched && form.controls.email.hasError('required')) {
-          <span class="field-error">L'email est obligatoire.</span>
-        }
-        @if (form.controls.email.touched && form.controls.email.hasError('email')) {
-          <span class="field-error">Format d'email invalide.</span>
-        }
-      </label>
-
-      <label>
-        Mot de passe
-        <input type="password" formControlName="password" placeholder="********" />
-        @if (form.controls.password.touched && form.controls.password.hasError('required')) {
-          <span class="field-error">Le mot de passe est obligatoire.</span>
-        }
-      </label>
-
-      @if (error()) {
-        <p class="form-error">{{ error() }}</p>
-      }
-
-      <button type="submit" [disabled]="submitting()">Se connecter</button>
-    </form>
-
-    <div class="demo-accounts">
-      <p>Comptes de demonstration :</p>
-      <ul>
-        <li><strong>Admin</strong> — admin&#64;educmanager.fr / admin123</li>
-        <li><strong>Formateur</strong> — formateur&#64;educmanager.fr / formateur123</li>
-        <li><strong>Référente</strong> — referente&#64;educmanager.fr / referente123</li>
-        <li><strong>Étudiant</strong> — etudiant&#64;educmanager.fr / etudiant123</li>
-      </ul>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" name="email" required />
     </div>
-  </div>
-</section>
+    <div>
+      <label>Mot de passe</label>
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </div>
+
+    <p *ngIf="error" class="error">{{ error }}</p>
+
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <p class="hint">Compte test : admin&#64;educmanager.fr / admin123</p>
+</div>

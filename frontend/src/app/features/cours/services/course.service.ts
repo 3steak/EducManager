@@ -1,22 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ApiService } from '../../../core/services/api.service';
+import { environment } from '../../../../environments/environment';
 import { Course } from '../../../shared/models/course.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  private readonly resourcePath = '/courses';
+  private url = environment.apiUrl + '/courses';
 
-  constructor(private readonly api: ApiService) {}
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Course[]> {
-    return this.api.get<Course[]>(this.resourcePath);
-  }
-
-  create(course: Course): Observable<Course> {
-    return this.api.post<Course>(this.resourcePath, course);
+    return this.http.get<Course[]>(this.url);
   }
 }

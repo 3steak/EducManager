@@ -1,20 +1,14 @@
-<section class="page-section">
+<section>
   <h1>Bienvenue sur EducManager</h1>
-  <p>Application de gestion de formation — frontend Angular connecte au backend Spring Boot.</p>
+  <p>Application de gestion de formation.</p>
 
-  @if (loading()) {
-    <p class="status">Chargement des cours...</p>
-  } @else if (error()) {
-    <p class="status error">{{ error() }}</p>
-  } @else if (courses().length === 0) {
-    <p class="status">Aucun cours pour le moment. L'API fonctionne correctement.</p>
-  } @else {
-    <ul class="item-list">
-      @for (course of courses(); track course.id) {
-        <li>
-          <strong>{{ course.code }}</strong> — {{ course.titre }}
-        </li>
-      }
-    </ul>
-  }
+  <p *ngIf="loading">Chargement des cours...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="!loading && !error && courses.length === 0">Aucun cours pour le moment.</p>
+
+  <ul *ngIf="!loading && !error && courses.length > 0">
+    <li *ngFor="let course of courses">
+      <strong>{{ course.code }}</strong> — {{ course.titre }}
+    </li>
+  </ul>
 </section>

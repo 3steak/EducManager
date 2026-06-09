@@ -2,28 +2,23 @@ import { Routes } from '@angular/router';
 
 import { authGuard } from '../core/auth/auth.guard';
 import { guestGuard } from '../core/auth/guest.guard';
+import { LoginComponent } from '../features/auth/pages/login/login.component';
+import { HomeComponent } from '../features/home/home.component';
 import { MainLayoutComponent } from '../shared/components/main-layout/main-layout.component';
-import { ROUTE_PATHS } from './route-paths';
 
 export const routes: Routes = [
   {
-    path: ROUTE_PATHS.login,
+    path: 'login',
+    component: LoginComponent,
     canActivate: [guestGuard],
-    loadComponent: () =>
-      import('../features/auth/pages/login/login.component').then((m) => m.LoginComponent),
   },
   {
-    path: ROUTE_PATHS.home,
+    path: '',
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
-      {
-        path: ROUTE_PATHS.home,
-        loadComponent: () =>
-          import('../features/home/home.component').then((m) => m.HomeComponent),
-      },
-      { path: '**', redirectTo: ROUTE_PATHS.home },
+      { path: '', component: HomeComponent },
     ],
   },
-  { path: '**', redirectTo: ROUTE_PATHS.login },
+  { path: '**', redirectTo: 'login' },
 ];

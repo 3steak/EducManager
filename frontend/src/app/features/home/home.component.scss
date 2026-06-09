@@ -1,38 +1,11 @@
-.page-section {
-  max-width: 48rem;
-}
-
 h1 {
-  margin: 0 0 0.5rem;
-  color: #0f172a;
+  color: #333;
 }
 
-p {
-  color: #475569;
+.error {
+  color: red;
 }
 
-.status {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-}
-
-.status.error {
-  color: #b91c1c;
-  border-color: #fecaca;
-  background: #fef2f2;
-}
-
-.item-list {
-  margin-top: 1.5rem;
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-}
-
-.item-list li + li {
-  margin-top: 0.5rem;
+ul {
+  margin-top: 1rem;
 }
