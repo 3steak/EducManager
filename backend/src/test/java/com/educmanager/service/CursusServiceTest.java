@@ -2,6 +2,7 @@ package com.educmanager.service;
 
 import com.educmanager.entity.Cursus;
 import com.educmanager.entity.Filiere;
+import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.CursusRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +58,17 @@ class CursusServiceTest {
     }
 
     @Test
+    void shouldThrowWhenCursusDoesNotExist() {
+        when(cursusRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> cursusService.findById(1L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Cursus not found");
+
+        verify(cursusRepository).findById(1L);
+    }
+
+    @Test
     void shouldCreateCursus() {
         Filiere filiere = Filiere.builder()
                 .id(1L)
@@ -88,5 +103,17 @@ class CursusServiceTest {
 
         verify(cursusRepository).findById(1L);
         verify(cursusRepository).delete(cursus);
+    }
+
+    @Test
+    void shouldThrowWhenDeletingUnknownCursus() {
+        when(cursusRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> cursusService.deleteById(1L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Cursus not found");
+
+        verify(cursusRepository).findById(1L);
+        verify(cursusRepository, never()).delete(any(Cursus.class));
     }
 }

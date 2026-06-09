@@ -1,6 +1,7 @@
 package com.educmanager.service;
 
 import com.educmanager.entity.Filiere;
+import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.FiliereRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,6 +57,17 @@ class FiliereServiceTest {
     }
 
     @Test
+    void shouldThrowWhenFiliereDoesNotExist() {
+        when(filiereRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> filiereService.findById(1L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Filiere not found");
+
+        verify(filiereRepository).findById(1L);
+    }
+
+    @Test
     void shouldCreateFiliere() {
         Filiere filiere = Filiere.builder()
                 .name("Développement")
@@ -73,7 +88,7 @@ class FiliereServiceTest {
     void shouldDeleteFiliereById() {
         Filiere filiere = Filiere.builder()
                 .id(1L)
-                .name("DÃ©veloppement")
+                .name("Développement")
                 .build();
         when(filiereRepository.findById(1L)).thenReturn(Optional.of(filiere));
 
@@ -81,5 +96,17 @@ class FiliereServiceTest {
 
         verify(filiereRepository).findById(1L);
         verify(filiereRepository).delete(filiere);
+    }
+
+    @Test
+    void shouldThrowWhenDeletingUnknownFiliere() {
+        when(filiereRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> filiereService.deleteById(1L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Filiere not found");
+
+        verify(filiereRepository).findById(1L);
+        verify(filiereRepository, never()).delete(any(Filiere.class));
     }
 }
