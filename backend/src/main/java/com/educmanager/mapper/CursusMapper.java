@@ -15,10 +15,11 @@ public final class CursusMapper {
         }
 
         Filiere filiere = cursus.getFiliere();
-
+        // construction du DTO
         return CursusDto.builder()
                 .id(cursus.getId())
                 .name(cursus.getName())
+                // si cursus a une filiere, on met id name dans dto sinon null
                 .filiereId(filiere != null ? filiere.getId() : null)
                 .filiereName(filiere != null ? filiere.getName() : null)
                 .build();
