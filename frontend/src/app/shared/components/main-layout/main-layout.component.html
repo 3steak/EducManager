@@ -1,0 +1,9 @@
+<header>
+  <a routerLink="/">EducManager</a>
+  <span *ngIf="user">Bonjour {{ user.prenom }} {{ user.nom }} ({{ user.role }})</span>
+  <button type="button" (click)="logout()">Deconnexion</button>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
