@@ -1,0 +1,31 @@
+<div class="layout">
+  <header class="header">
+    <a routerLink="/" class="brand">EducManager</a>
+
+    <nav class="nav">
+      @for (item of visibleNavItems(); track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.path === routes.home }"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="user-actions">
+      @if (currentUser(); as user) {
+        <span class="user-info">
+          {{ user.prenom }} {{ user.nom }}
+          <small>({{ user.roles.join(', ') }})</small>
+        </span>
+      }
+      <button type="button" class="logout-btn" (click)="logout()">Deconnexion</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>
