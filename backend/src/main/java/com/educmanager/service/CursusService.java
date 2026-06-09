@@ -1,6 +1,7 @@
 package com.educmanager.service;
 
 import com.educmanager.entity.Cursus;
+import com.educmanager.exception.BadRequestException;
 import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.CursusRepository;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class CursusService {
     }
 
     public Cursus create(Cursus cursus) {
+        validateName(cursus.getName());
+        validateFiliere(cursus);
+
         return cursusRepository.save(cursus);
     }
 
@@ -33,6 +37,8 @@ public class CursusService {
         Cursus existingCursus = cursusRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));
 
+        validateName(cursus.getName());
+        validateFiliere(cursus);
         existingCursus.setName(cursus.getName());
         existingCursus.setFiliere(cursus.getFiliere());
 
@@ -44,5 +50,17 @@ public class CursusService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));
 
         cursusRepository.delete(cursus);
+    }
+
+    private void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new BadRequestException("Cursus name is required");
+        }
+    }
+
+    private void validateFiliere(Cursus cursus) {
+        if (cursus.getFiliere() == null) {
+            throw new BadRequestException("Cursus filiere is required");
+        }
     }
 }

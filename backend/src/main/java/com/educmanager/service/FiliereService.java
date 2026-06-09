@@ -1,6 +1,7 @@
 package com.educmanager.service;
 
 import com.educmanager.entity.Filiere;
+import com.educmanager.exception.BadRequestException;
 import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.FiliereRepository;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class FiliereService {
     }
 
     public Filiere create(Filiere filiere) {
+        validateName(filiere.getName());
+
         return filiereRepository.save(filiere);
     }
 
@@ -33,6 +36,7 @@ public class FiliereService {
         Filiere existingFiliere = filiereRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));
 
+        validateName(filiere.getName());
         existingFiliere.setName(filiere.getName());
 
         return filiereRepository.save(existingFiliere);
@@ -43,5 +47,11 @@ public class FiliereService {
                 .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));
 
         filiereRepository.delete(filiere);
+    }
+
+    private void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new BadRequestException("Filiere name is required");
+        }
     }
 }
