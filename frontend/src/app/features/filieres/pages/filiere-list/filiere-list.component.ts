@@ -17,7 +17,8 @@ export class FiliereListComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  constructor(private filiereService: FiliereService) {}
+  // injection du service
+  constructor(private filiereService: FiliereService) { }
 
   ngOnInit(): void {
     this.loadFilieres();
@@ -27,6 +28,7 @@ export class FiliereListComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
+    //  equivalent de await fetch, .then
     this.filiereService.getAll().subscribe({
       next: (data) => {
         this.filieres = data;
