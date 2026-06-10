@@ -3,13 +3,7 @@
 
   <form (ngSubmit)="onSubmit()">
     <label for="filiere-name">Nom</label>
-    <input
-      id="filiere-name"
-      type="text"
-      name="name"
-      [(ngModel)]="name"
-      required
-    />
+    <input id="filiere-name" type="text" name="name" [(ngModel)]="name" required />
     <button type="submit">Ajouter</button>
   </form>
 
@@ -22,12 +16,29 @@
       <tr>
         <th>ID</th>
         <th>Nom</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
+      <!-- boucle dans filieres -->
       <tr *ngFor="let filiere of filieres">
         <td>{{ filiere.id }}</td>
-        <td>{{ filiere.name }}</td>
+        <td>
+          <ng-container *ngIf="editingFiliereId === filiere.id; else nameView">
+            <input type="text" name="editingName-{{ filiere.id }}" [(ngModel)]="editingName" required />
+          </ng-container>
+          <ng-template #nameView>{{ filiere.name }}</ng-template>
+        </td>
+        <td class="actions">
+          <ng-container *ngIf="editingFiliereId === filiere.id; else actionButtons">
+            <button type="button" (click)="updateFiliere()">Enregistrer</button>
+            <button type="button" (click)="cancelEdit()">Annuler</button>
+          </ng-container>
+          <ng-template #actionButtons>
+            <button type="button" (click)="startEdit(filiere)">Modifier</button>
+            <button type="button" (click)="deleteFiliere(filiere.id!)">Supprimer</button>
+          </ng-template>
+        </td>
       </tr>
     </tbody>
   </table>

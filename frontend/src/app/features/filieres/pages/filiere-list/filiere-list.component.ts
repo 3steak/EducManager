@@ -14,6 +14,8 @@ import { Filiere } from '../../../../shared/models/filiere.model';
 export class FiliereListComponent implements OnInit {
   filieres: Filiere[] = [];
   name = '';
+  editingFiliereId: number | null = null;
+  editingName = '';
   loading = true;
   error: string | null = null;
 
@@ -28,7 +30,6 @@ export class FiliereListComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    //  equivalent de await fetch, .then
     this.filiereService.getAll().subscribe({
       next: (data) => {
         this.filieres = data;
@@ -56,6 +57,63 @@ export class FiliereListComponent implements OnInit {
       },
       error: () => {
         this.error = 'Impossible de créer la filière.';
+      },
+    });
+  }
+
+  startEdit(filiere: Filiere): void {
+    if (filiere.id === undefined) {
+      return;
+    }
+
+    this.editingFiliereId = filiere.id;
+    this.editingName = filiere.name;
+  }
+
+  cancelEdit(): void {
+    this.editingFiliereId = null;
+    this.editingName = '';
+  }
+
+  updateFiliere(): void {
+    if (this.editingFiliereId === null) {
+      return;
+    }
+
+    const name = this.editingName.trim();
+    if (!name) {
+      return;
+    }
+
+    this.error = null;
+
+    this.filiereService.update(this.editingFiliereId, { name }).subscribe({
+      next: () => {
+        this.cancelEdit();
+        this.loadFilieres();
+      },
+      error: () => {
+        this.error = 'Impossible de modifier la filière.';
+      },
+    });
+  }
+
+  deleteFiliere(id: number): void {
+    if (!confirm('Supprimer cette filière ?')) {
+      return;
+    }
+
+    this.error = null;
+
+    this.filiereService.delete(id).subscribe({
+      next: () => {
+        if (this.editingFiliereId === id) {
+          this.cancelEdit();
+        }
+        this.loadFilieres();
+      },
+      error: () => {
+        this.error = 'Impossible de supprimer la filière.';
       },
     });
   }
