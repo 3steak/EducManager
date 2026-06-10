@@ -1,9 +1,11 @@
 package com.educmanager.service;
 
 import com.educmanager.entity.Cursus;
+import com.educmanager.entity.Filiere;
 import com.educmanager.exception.BadRequestException;
 import com.educmanager.exception.ResourceNotFoundException;
 import com.educmanager.repository.CursusRepository;
+import com.educmanager.repository.FiliereRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +14,11 @@ import java.util.List;
 public class CursusService {
 
     private final CursusRepository cursusRepository;
+    private final FiliereRepository filiereRepository;
 
-    public CursusService(CursusRepository cursusRepository) {
+    public CursusService(CursusRepository cursusRepository, FiliereRepository filiereRepository) {
         this.cursusRepository = cursusRepository;
+        this.filiereRepository = filiereRepository;
     }
 
     public List<Cursus> findAll() {
@@ -28,7 +32,8 @@ public class CursusService {
 
     public Cursus create(Cursus cursus) {
         validateName(cursus.getName());
-        validateFiliere(cursus);
+        Filiere filiere = findFiliere(cursus);
+        cursus.setFiliere(filiere);
 
         return cursusRepository.save(cursus);
     }
@@ -38,9 +43,9 @@ public class CursusService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cursus not found"));
 
         validateName(cursus.getName());
-        validateFiliere(cursus);
+        Filiere filiere = findFiliere(cursus);
         existingCursus.setName(cursus.getName());
-        existingCursus.setFiliere(cursus.getFiliere());
+        existingCursus.setFiliere(filiere);
 
         return cursusRepository.save(existingCursus);
     }
@@ -58,9 +63,12 @@ public class CursusService {
         }
     }
 
-    private void validateFiliere(Cursus cursus) {
-        if (cursus.getFiliere() == null) {
+    private Filiere findFiliere(Cursus cursus) {
+        if (cursus.getFiliere() == null || cursus.getFiliere().getId() == null) {
             throw new BadRequestException("Cursus filiere is required");
         }
+
+        return filiereRepository.findById(cursus.getFiliere().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Filiere not found"));
     }
 }
