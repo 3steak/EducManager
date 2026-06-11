@@ -1,0 +1,69 @@
+<section>
+  <h1>Cursus</h1>
+
+  <form (ngSubmit)="onSubmit()">
+    <label for="cursus-name">
+      Nom
+      <input id="cursus-name" type="text" name="name" [(ngModel)]="name" required />
+    </label>
+
+    <label for="cursus-filiere">
+      Filiere
+      <select id="cursus-filiere" name="filiereId" [(ngModel)]="filiereId" required>
+        <option [ngValue]="null">Selectionner une filiere</option>
+        <option *ngFor="let filiere of filieres" [ngValue]="filiere.id">
+          {{ filiere.name }}
+        </option>
+      </select>
+    </label>
+
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <p *ngIf="loading">Chargement des cursus...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="!loading && !error && cursus.length === 0">Aucun cursus pour le moment.</p>
+
+  <table *ngIf="!loading && !error && cursus.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Filiere</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cursus">
+        <td>{{ item.id }}</td>
+        <td>
+          <ng-container *ngIf="editingCursusId === item.id; else nameView">
+            <input type="text" name="editingName-{{ item.id }}" [(ngModel)]="editingName" required />
+          </ng-container>
+          <ng-template #nameView>{{ item.name }}</ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="editingCursusId === item.id; else filiereView">
+            <select name="editingFiliereId-{{ item.id }}" [(ngModel)]="editingFiliereId" required>
+              <option [ngValue]="null">Selectionner une filiere</option>
+              <option *ngFor="let filiere of filieres" [ngValue]="filiere.id">
+                {{ filiere.name }}
+              </option>
+            </select>
+          </ng-container>
+          <ng-template #filiereView>{{ item.filiereName }}</ng-template>
+        </td>
+        <td class="actions">
+          <ng-container *ngIf="editingCursusId === item.id; else actionButtons">
+            <button type="button" (click)="updateCursus()">Enregistrer</button>
+            <button type="button" (click)="cancelEdit()">Annuler</button>
+          </ng-container>
+          <ng-template #actionButtons>
+            <button type="button" (click)="startEdit(item)">Modifier</button>
+            <button type="button" (click)="deleteCursus(item.id!)">Supprimer</button>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
