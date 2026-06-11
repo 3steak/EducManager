@@ -1,0 +1,21 @@
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <span class="sidebar__title">EducManager</span>
+  </div>
+
+  <nav class="sidebar__nav">
+    <a
+      *ngFor="let item of visibleItems"
+      [routerLink]="item.path"
+      routerLinkActive="sidebar__link--active"
+      class="sidebar__link"
+    >
+      {{ item.label }}
+    </a>
+  </nav>
+
+  <div class="sidebar__footer" *ngIf="user">
+    <span class="sidebar__user">{{ user.prenom }} {{ user.nom }}</span>
+    <button type="button" class="sidebar__logout" (click)="logout()">Déconnexion</button>
+  </div>
+</aside>

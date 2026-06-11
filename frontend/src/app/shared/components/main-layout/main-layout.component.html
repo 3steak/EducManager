@@ -1,11 +1,6 @@
-<header>
-  <a routerLink="/">EducManager</a>
-  <a routerLink="/filieres">Filières</a>
-  <a routerLink="/cursus">Cursus</a>
-  <span *ngIf="user">Bonjour {{ user.prenom }} {{ user.nom }} ({{ user.role }})</span>
-  <button type="button" (click)="logout()">Deconnexion</button>
-</header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <main class="layout__content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,23 @@
+<div class="cours-page">
+  <h1>Cours</h1>
+  <p class="wip">Page en cours — recherche avancée et création de cours à terminer.</p>
+
+  <div class="toolbar">
+    <input
+      type="text"
+      placeholder="Rechercher un cours..."
+      [(ngModel)]="searchQuery"
+    />
+    <button type="button" class="btn-disabled" disabled title="Non implémenté">
+      + Nouveau cours
+    </button>
+  </div>
+
+  <p *ngIf="loading">Chargement...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="!loading && !error && filteredCourses.length === 0">Aucun cours trouvé.</p>
+
+  <div class="grid" *ngIf="!loading && !error && filteredCourses.length > 0">
+    <app-course-card *ngFor="let course of filteredCourses" [course]="course" />
+  </div>
+</div>
