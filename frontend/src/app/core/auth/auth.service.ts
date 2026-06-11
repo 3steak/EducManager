@@ -77,9 +77,9 @@ export class AuthService {
       case 'FORMATEUR':
         return '/cours';
       case 'ADMIN':
-        return '/dashboard';
+        return '/utilisateurs';
       case 'REFERENTE':
-        return '/etudiants';
+        return '/filieres';
       case 'ETUDIANT':
         return '/calendrier';
       default:

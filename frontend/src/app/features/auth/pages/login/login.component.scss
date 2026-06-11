@@ -43,8 +43,19 @@ button {
   color: red;
 }
 
-.hint {
+.hints {
   margin-top: 16px;
+}
+
+.hints__title {
+  margin: 0 0 8px;
   font-size: 0.9rem;
+  color: #666;
+  font-weight: bold;
+}
+
+.hint {
+  margin: 4px 0;
+  font-size: 0.85rem;
   color: #666;
 }

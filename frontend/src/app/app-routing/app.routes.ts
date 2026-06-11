@@ -10,7 +10,6 @@ import { CoursListComponent } from '../features/cours/pages/cours-list/cours-lis
 import { DashboardComponent } from '../features/dashboard/dashboard.component';
 import { CursusListComponent } from '../features/cursus/pages/cursus-list/cursus-list.component';
 import { FiliereListComponent } from '../features/filieres/pages/filiere-list/filiere-list.component';
-import { HomeComponent } from '../features/home/home.component';
 import { MainLayoutComponent } from '../shared/components/main-layout/main-layout.component';
 import { PlaceholderPageComponent } from '../shared/components/placeholder-page/placeholder-page.component';
 
@@ -34,17 +33,17 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [roleGuard('ADMIN', 'FORMATEUR', 'REFERENTE', 'ETUDIANT')],
+        canActivate: [roleGuard('FORMATEUR', 'REFERENTE', 'ETUDIANT')],
       },
       {
         path: 'cours',
         component: CoursListComponent,
-        canActivate: [roleGuard('ADMIN', 'FORMATEUR')],
+        canActivate: [roleGuard('REFERENTE', 'FORMATEUR')],
       },
       {
         path: 'promotions',
         ...placeholder('Promotions'),
-        canActivate: [roleGuard('ADMIN', 'REFERENTE')],
+        canActivate: [roleGuard('REFERENTE')],
       },
       {
         path: 'calendrier',
@@ -52,24 +51,19 @@ export const routes: Routes = [
         canActivate: [roleGuard('ETUDIANT')],
       },
       {
-        path: 'etudiants',
-        ...placeholder('Étudiants'),
-        canActivate: [roleGuard('ADMIN', 'REFERENTE')],
-      },
-      {
         path: 'filieres',
         component: FiliereListComponent,
-        canActivate: [roleGuard('ADMIN', 'REFERENTE')],
+        canActivate: [roleGuard('REFERENTE')],
       },
       {
         path: 'cursus',
         component: CursusListComponent,
-        canActivate: [roleGuard('ADMIN', 'REFERENTE')],
+        canActivate: [roleGuard('REFERENTE')],
       },
       {
         path: 'inscriptions',
         ...placeholder('Inscriptions'),
-        canActivate: [roleGuard('ADMIN', 'REFERENTE')],
+        canActivate: [roleGuard('REFERENTE')],
       },
       {
         path: 'utilisateurs',
