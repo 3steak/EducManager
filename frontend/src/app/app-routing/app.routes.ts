@@ -8,6 +8,9 @@ import { LoginComponent } from '../features/auth/pages/login/login.component';
 import { CalendrierComponent } from '../features/calendrier/pages/calendrier/calendrier.component';
 import { CoursListComponent } from '../features/cours/pages/cours-list/cours-list.component';
 import { DashboardComponent } from '../features/dashboard/dashboard.component';
+import { CursusListComponent } from '../features/cursus/pages/cursus-list/cursus-list.component';
+import { FiliereListComponent } from '../features/filieres/pages/filiere-list/filiere-list.component';
+import { HomeComponent } from '../features/home/home.component';
 import { MainLayoutComponent } from '../shared/components/main-layout/main-layout.component';
 import { PlaceholderPageComponent } from '../shared/components/placeholder-page/placeholder-page.component';
 
@@ -55,12 +58,12 @@ export const routes: Routes = [
       },
       {
         path: 'filieres',
-        ...placeholder('Filières'),
+        component: FiliereListComponent,
         canActivate: [roleGuard('ADMIN', 'REFERENTE')],
       },
       {
         path: 'cursus',
-        ...placeholder('Cursus'),
+        component: CursusListComponent,
         canActivate: [roleGuard('ADMIN', 'REFERENTE')],
       },
       {
