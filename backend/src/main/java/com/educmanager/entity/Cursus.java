@@ -19,7 +19,7 @@ public class Cursus {
 
     @Column(nullable = false)
     private String name;
-    // revoir bidirectionel
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "filiere_id", nullable = false)
     private Filiere filiere;
