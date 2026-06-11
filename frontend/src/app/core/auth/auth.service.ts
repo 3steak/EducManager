@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { UserRole } from '../../shared/models/user-role.model';
 import { User } from '../../shared/models/user.model';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class AuthService {
   private currentUser: User | null = null;
 
   // comptes de test en dur (a remplacer par l'API plus tard)
-  private accounts = [
+  private accounts: { email: string; password: string; user: User }[] = [
     {
       email: 'admin@educmanager.fr',
       password: 'admin123',
@@ -60,5 +61,29 @@ export class AuthService {
 
   getUser(): User | null {
     return this.currentUser;
+  }
+
+  hasRole(...roles: UserRole[]): boolean {
+    const user = this.getUser();
+    return user !== null && roles.includes(user.role);
+  }
+
+  getDefaultRoute(): string {
+    const user = this.getUser();
+    if (!user) {
+      return '/login';
+    }
+    switch (user.role) {
+      case 'FORMATEUR':
+        return '/cours';
+      case 'ADMIN':
+        return '/dashboard';
+      case 'REFERENTE':
+        return '/etudiants';
+      case 'ETUDIANT':
+        return '/calendrier';
+      default:
+        return '/dashboard';
+    }
   }
 }

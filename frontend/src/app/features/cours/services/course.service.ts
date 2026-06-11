@@ -1,19 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 
-import { environment } from '../../../../environments/environment';
 import { Course } from '../../../shared/models/course.model';
+import { MOCK_COURSES } from '../mocks/courses.mock';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  private url = environment.apiUrl + '/courses';
-
-  constructor(private http: HttpClient) {}
-
   getAll(): Observable<Course[]> {
-    return this.http.get<Course[]>(this.url);
+    return of([...MOCK_COURSES]).pipe(delay(400));
   }
 }

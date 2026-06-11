@@ -4,4 +4,7 @@ export interface Course {
   titre: string;
   description?: string;
   dureeJours?: number;
+  dureeHeures?: number;
+  formateur?: string;
+  etudiants?: number;
 }

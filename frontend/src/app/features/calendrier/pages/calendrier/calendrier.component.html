@@ -1,0 +1,21 @@
+<div class="calendrier-page">
+  <h1>Calendrier</h1>
+  <p class="wip">Version simple — vue mensuelle et filtres à venir.</p>
+
+  <p *ngIf="loading">Chargement...</p>
+
+  <div *ngIf="!loading">
+    <section *ngFor="let jour of eventsParJour" class="jour">
+      <h2>{{ jour.dateLabel }}</h2>
+      <ul>
+        <li *ngFor="let event of jour.events">
+          <strong>{{ event.heureDebut }} – {{ event.heureFin }}</strong>
+          — {{ event.coursTitre }}
+          <span class="salle">({{ event.salle }})</span>
+        </li>
+      </ul>
+    </section>
+
+    <p *ngIf="eventsParJour.length === 0" class="vide">Aucun cours planifié.</p>
+  </div>
+</div>
